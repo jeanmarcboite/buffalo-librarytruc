@@ -70,7 +70,7 @@ type Work struct {
 
 // LookUpISBN -- lookup a work on goodreads, with isbn
 func LookUpISBN(isbn string) (Work, error) {
-	return get(isbn, net.Koanf.String("goodreads.url.isbn"))
+	return get(isbn, net.Koanf.String("librarything.url.isbn"))
 }
 
 func get(what string, where string) (Work, error) {
@@ -88,11 +88,11 @@ func get(what string, where string) (Work, error) {
 	/* Work could be: <error>Page not found</error> */
 	xml.Unmarshal(response, &work)
 
-	if work.XMLName.Local != "http://www.librarything.com/" {
+	if work.XMLName.Local == "http://www.librarything.com/" {
 		return work, nil
 	}
 
 	net.Logger.Debugf("work.XMLName.Local: %v", work.XMLName.Local)
 
-	return work, fmt.Errorf("Nothing found on LibraryThing for '%v'", what)
+	return work, fmt.Errorf("LibraryThing for '%v': %v", what, string(response))
 }

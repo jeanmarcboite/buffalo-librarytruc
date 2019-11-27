@@ -1,8 +1,5 @@
 application_name: &application BookinS
-cache:
-  isbn: True
-  directory: ~/.cache/BookinS
-  verbose: True
+cache: 'librarytruc'
 fcache:
   isbn: isbn
 calibre:

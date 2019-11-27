@@ -11,7 +11,8 @@ import (
 
 	"github.com/jeanmarcboite/librarytruc/internal/controllers"
 )
-
+// Logger
+var Logger *zap.SugaredLogger
 // serverCmd represents the server command
 var serverCmd = &cobra.Command{
 	Use:   "server",
@@ -25,6 +26,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		r := gin.New()
 		logger, _ := zap.NewProduction()
+		Logger = logger.Sugar()
 		// Add a ginzap middleware, which:
 		//   - Logs all requests, like a combined access and error log.
 		//   - Logs to stdout.

@@ -16,10 +16,13 @@ import (
 func HTTPGetWithKey(url string, keyName string, keyValue string) ([]byte, error) {
 	URL := regexp.MustCompile("^https*://").ReplaceAllString(url, "")
 	// cacheFile := "/home/box/.cache/book/" + URL
-	cacheFile, err := xdg.CacheFile("book/" + URL)
+
+	cacheFile, err := xdg.CacheFile(Koanf.String("cache") + "/" + URL)
 	if err != nil {
 		return nil, err
 	}
+
+	Logger.Debugf("GET: %v", URL)
 
 	if _, err := os.Stat(cacheFile); err == nil {
 		fileContent, readError := ioutil.ReadFile(cacheFile)
