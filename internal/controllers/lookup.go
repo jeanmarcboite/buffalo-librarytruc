@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jeanmarcboite/librarytruc/pkg/books/online/librarything"
 	"github.com/jeanmarcboite/librarytruc/internal/utils"
+	"github.com/jeanmarcboite/librarytruc/pkg/books/online/librarything"
 	"net/http"
 )
 

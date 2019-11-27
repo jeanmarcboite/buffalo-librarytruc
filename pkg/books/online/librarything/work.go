@@ -73,6 +73,15 @@ func LookUpISBN(isbn string) (Work, error) {
 	return get(isbn, net.Koanf.String("librarything.url.isbn"))
 }
 
+type argError struct {
+	context string
+	msg     string
+}
+
+func (e *argError) Error() string {
+	return e.msg
+}
+
 func get(what string, where string) (Work, error) {
 	url := fmt.Sprintf(where, what)
 
@@ -88,11 +97,14 @@ func get(what string, where string) (Work, error) {
 	/* Work could be: <error>Page not found</error> */
 	xml.Unmarshal(response, &work)
 
-	if work.XMLName.Local == "http://www.librarything.com/" {
+	if work.XMLName.Local == "response" {
 		return work, nil
 	}
 
-	net.Logger.Debugf("work.XMLName.Local: %v", work.XMLName.Local)
+	net.Logger.Infof("work.XMLName.Local: %v", work.XMLName.Local)
 
-	return work, fmt.Errorf("LibraryThing for '%v': %v", what, string(response))
+	return work, &argError{
+		context: fmt.Sprintf("LibraryThing for '%v'", what),
+		msg:     string(response),
+	}
 }
