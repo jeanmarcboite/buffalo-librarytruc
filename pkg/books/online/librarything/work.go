@@ -3,7 +3,9 @@ package librarything
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 
+	xml2json "github.com/basgys/goxml2json"
 	"github.com/jeanmarcboite/librarytruc/pkg/books/online/net"
 )
 
@@ -98,6 +100,16 @@ func get(what string, where string) (Work, error) {
 	xml.Unmarshal(response, &work)
 
 	if work.XMLName.Local == "response" {
+		if work.Stat == "fail" {
+			xml := strings.NewReader(string(response))
+			json, _ := xml2json.Convert(xml)
+
+			return work, &argError{
+				context: fmt.Sprintf("LibraryThing for '%v'", what),
+				msg:     json.String(),
+			}
+		}
+
 		return work, nil
 	}
 

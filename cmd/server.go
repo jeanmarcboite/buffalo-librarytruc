@@ -2,17 +2,20 @@ package cmd
 
 import (
 	"fmt"
-	"time"
-
+	"github.com/foolin/goview/supports/ginview"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"github.com/kubastick/ginception"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
+	"time"
 
 	"github.com/jeanmarcboite/librarytruc/internal/controllers"
 )
+
 // Logger
 var Logger *zap.SugaredLogger
+
 // serverCmd represents the server command
 var serverCmd = &cobra.Command{
 	Use:   "server",
@@ -36,6 +39,7 @@ to quickly create a Cobra application.`,
 		// Logs all panic to error log
 		//   - stack means whether output the stack info.
 		r.Use(ginzap.RecoveryWithZap(logger, true))
+		r.Use(ginception.Middleware()) // Attach ginception middleware
 
 		// Example ping request.
 		r.GET("/ping", func(c *gin.Context) {
@@ -47,6 +51,7 @@ to quickly create a Cobra application.`,
 			panic("An unexpected error happen!")
 		})
 
+		r.HTMLRender = ginview.Default()
 		r.LoadHTMLGlob("internal/templates/*.html")
 		r.GET("/", controllers.Home)
 		r.GET("/book/:id", controllers.LookupID)

@@ -8,35 +8,47 @@ import (
 	"sort"
 )
 
+func json2html(xm []byte, checked bool) template.HTML {
+	var xmu interface{}
+	err := json.Unmarshal(xm, &xmu)
+	if err != nil {
+		return template.HTML(err.Error())
+	}
+
+	return template.HTML(styleSheet + toHTML(xmu, 1, checked))
+}
+// JSON2HTML -- convert a JSON to HTML 
+func JSON2HTML(xm string, checked bool) template.HTML {
+    return json2html([]byte(xm), checked)
+}
+
 // SprintHTML  -- print data in HTML
-func SprintHTML(x interface{}) template.HTML {
+func SprintHTML(x interface{}, checked bool) template.HTML {
 	xm, err := json.Marshal(x)
 	if err != nil {
 		return template.HTML(err.Error())
-	}
-	var xmu interface{}
-	err = json.Unmarshal(xm, &xmu)
-	if err != nil {
-		return template.HTML(err.Error())
-	}
-
-	return template.HTML(styleSheet + toHTML(xmu, 1))
+    }
+    return json2html(xm, checked)
 }
 
-func toHTML(x interface{}, id int) string {
+func toHTML(x interface{}, id int, checked bool) string {
 	switch v := x.(type) {
 	case map[string]interface{}:
-		return mapToHTML(v, id)
+		return mapToHTML(v, id, checked)
 	case []interface{}:
-		return arrayToHTML(v, id)
+		return arrayToHTML(v, id, checked)
 	}
 
 	return fmt.Sprintf("%v", x)
 }
 
-func mapToHTML(m map[string]interface{}, id int) string {
+func mapToHTML(m map[string]interface{}, id int, checked bool) string {
+	checkFlag := ""
+	if checked {
+		checkFlag = "checked"
+	}
 	checkbox := `
-     <li><input type='checkbox' id='__c%v' />
+     <li><input type='checkbox' id='__c%v' %v/>
         <i class='fa fa-angle-double-right'></i>
         <i class='fa fa-angle-double-down'></i>
         <label for='__c%v'>%v</label>
@@ -56,22 +68,22 @@ func mapToHTML(m map[string]interface{}, id int) string {
 		//c.Log.Debugf("ID%v: %v\n", id, reflect.TypeOf(v))
 		switch m[k].(type) {
 		case map[string]interface{}, []interface{}:
-			fmt.Fprintf(bufferString, checkbox, id, id, k, toHTML(m[k], id))
+			fmt.Fprintf(bufferString, checkbox, id, checkFlag, id, k, toHTML(m[k], id, checked))
 		default:
-			fmt.Fprintf(bufferString, value, k, toHTML(m[k], id))
+			fmt.Fprintf(bufferString, value, k, toHTML(m[k], id, checked))
 		}
 	}
 	bufferString.WriteString("</ul>")
 	return bufferString.String()
 }
 
-func arrayToHTML(a []interface{}, id int) string {
+func arrayToHTML(a []interface{}, id int, checked bool) string {
 	format := `<li>%v</li>`
 
 	bufferString := bytes.NewBufferString("<ul>")
 	for _, v := range a {
 		id++
-		fmt.Fprintf(bufferString, format, toHTML(v, id))
+		fmt.Fprintf(bufferString, format, toHTML(v, id, checked))
 	}
 	bufferString.WriteString("</ul>")
 	return bufferString.String()

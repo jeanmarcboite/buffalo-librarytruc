@@ -20,10 +20,11 @@ func LookupID(c *gin.Context) {
 	}
 	thing, err := librarything.LookUpISBN(bookID.ISBN)
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, "error-500.html", gin.H{"error": err})
+		html := utils.JSON2HTML(err.Error(), true)
+		c.HTML(http.StatusInternalServerError, "error-500.html", gin.H{"errorHTML": html})
 		return
 	}
-	dataHTML := utils.SprintHTML(thing)
+	dataHTML := utils.SprintHTML(thing, false)
 
 	c.HTML(http.StatusOK,
 		"Details.html", gin.H{"title": "this is the title (reload)", "debug": dataHTML, "librarything": thing})
