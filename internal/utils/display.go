@@ -17,9 +17,10 @@ func json2html(xm []byte, checked bool) template.HTML {
 
 	return template.HTML(styleSheet + toHTML(xmu, 1, checked))
 }
-// JSON2HTML -- convert a JSON to HTML 
+
+// JSON2HTML -- convert a JSON to HTML
 func JSON2HTML(xm string, checked bool) template.HTML {
-    return json2html([]byte(xm), checked)
+	return json2html([]byte(xm), checked)
 }
 
 // SprintHTML  -- print data in HTML
@@ -27,8 +28,8 @@ func SprintHTML(x interface{}, checked bool) template.HTML {
 	xm, err := json.Marshal(x)
 	if err != nil {
 		return template.HTML(err.Error())
-    }
-    return json2html(xm, checked)
+	}
+	return json2html(xm, checked)
 }
 
 func toHTML(x interface{}, id int, checked bool) string {
@@ -51,7 +52,7 @@ func mapToHTML(m map[string]interface{}, id int, checked bool) string {
      <li><input type='checkbox' id='__c%v' %v/>
         <i class='fa fa-angle-double-right'></i>
         <i class='fa fa-angle-double-down'></i>
-        <label for='__c%v'>%v</label>
+        <label for='__c%v'>%v %v</label>
         %v
     </li>
     `
@@ -67,8 +68,10 @@ func mapToHTML(m map[string]interface{}, id int, checked bool) string {
 		id++
 		//c.Log.Debugf("ID%v: %v\n", id, reflect.TypeOf(v))
 		switch m[k].(type) {
-		case map[string]interface{}, []interface{}:
-			fmt.Fprintf(bufferString, checkbox, id, checkFlag, id, k, toHTML(m[k], id, checked))
+		case map[string]interface{}:
+			fmt.Fprintf(bufferString, checkbox, id, checkFlag, id, k, "{}", toHTML(m[k], id, checked))
+		case []interface{}:
+			fmt.Fprintf(bufferString, checkbox, id, checkFlag, id, k, "[]", toHTML(m[k], id, checked))
 		default:
 			fmt.Fprintf(bufferString, value, k, toHTML(m[k], id, checked))
 		}
@@ -80,12 +83,12 @@ func mapToHTML(m map[string]interface{}, id int, checked bool) string {
 func arrayToHTML(a []interface{}, id int, checked bool) string {
 	format := `<li>%v</li>`
 
-	bufferString := bytes.NewBufferString("<ul>")
+	bufferString := bytes.NewBufferString("<ol>")
 	for _, v := range a {
 		id++
 		fmt.Fprintf(bufferString, format, toHTML(v, id, checked))
 	}
-	bufferString.WriteString("</ul>")
+	bufferString.WriteString("</ol>")
 	return bufferString.String()
 }
 
@@ -107,6 +110,14 @@ const styleSheet = `
         display: block;
     }
     
+    input~ol {
+        display: none;
+    }
+    
+    input:checked~ol {
+        display: block;
+    }
+    
     input~.fa-angle-double-down {
         display: none;
     }
@@ -125,11 +136,11 @@ const styleSheet = `
         font-family: 'Arial';
         font-size: 15px;
         padding: 0.2em;
-        border: 1px solid transparent;
+        border: 1px solid grey;
     }
     
     li:hover {
-        border: 1px solid grey;
+        border: 3px solid black;
         border-radius: 3px;
         background-color: lightgrey;
     }
