@@ -66,8 +66,8 @@ func mapToHTML(m map[string]interface{}, id int, checked bool) string {
 	}
 	checkbox := `
      <li><input type='checkbox' id='__c%v' %v/>
-        <i class='fa fa-angle-double-right tree-node-right'></i>
-        <i class='fa fa-angle-double-down tree-node-down'></i>
+        <i class='fa tree-node-right'></i>
+        <i class='fa tree-node-down'></i>
         <label for='__c%v'>%v %v</label>
         %v
     </li>
