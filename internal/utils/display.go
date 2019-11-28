@@ -83,7 +83,7 @@ func mapToHTML(m map[string]interface{}, id int, checked bool) string {
 func arrayToHTML(a []interface{}, id int, checked bool) string {
 	format := `<li>%v</li>`
 
-	bufferString := bytes.NewBufferString("<ol>")
+	bufferString := bytes.NewBufferString("<ol  type = 'I'>")
 	for _, v := range a {
 		id++
 		fmt.Fprintf(bufferString, format, toHTML(v, id, checked))
