@@ -52,7 +52,7 @@ to quickly create a Cobra application.`,
 		})
 
 		r.HTMLRender = ginview.Default()
-		r.LoadHTMLGlob("internal/templates/*.html")
+		r.LoadHTMLGlob("internal/templates/bulma/*.html")
 		r.GET("/", controllers.Home)
 		r.GET("/book/:id", controllers.LookupID)
 		r.Run() // listen and serve on 0.0.0.0:8080
