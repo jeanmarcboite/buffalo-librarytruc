@@ -66,8 +66,8 @@ func mapToHTML(m map[string]interface{}, id int, checked bool) string {
 	}
 	checkbox := `
      <li><input type='checkbox' id='__c%v' %v/>
-        <i class='fa fa-angle-double-right'></i>
-        <i class='fa fa-angle-double-down'></i>
+        <i class='fa fa-angle-double-right tree-node-right'></i>
+        <i class='fa fa-angle-double-down tree-node-down'></i>
         <label for='__c%v'>%v %v</label>
         %v
     </li>
@@ -134,15 +134,15 @@ const styleSheet = `
         display: block;
     }
     
-    input~.fa-angle-double-down {
+    input~.tree-node-down {
         display: none;
     }
     
-    input:checked~.fa-angle-double-right {
+    input:checked~.tree-node-right {
         display: none;
     }
     
-    input:checked~.fa-angle-double-down {
+    input:checked~.tree-node-down {
         display: inline;
     }
     /* habillage */
