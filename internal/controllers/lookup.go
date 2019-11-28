@@ -24,8 +24,11 @@ func LookupID(c *gin.Context) {
 		c.HTML(http.StatusInternalServerError, "error-500.html", gin.H{"errorHTML": html})
 		return
 	}
-	dataHTML := utils.SprintHTML(thing, false)
-
+	d := make(map[string]interface{})
+	d["LibraryThing"] = thing
 	c.HTML(http.StatusOK,
-		"Details.html", gin.H{"title": "this is the title (reload)", "debug": dataHTML, "librarything": thing})
+		"Details.html", 
+		gin.H{"title": "this is the title (reload)", 
+		"debug": utils.NewDebug(d),
+		"librarything": thing})
 }

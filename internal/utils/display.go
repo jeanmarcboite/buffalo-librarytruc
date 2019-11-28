@@ -8,6 +8,22 @@ import (
 	"sort"
 )
 
+type Debug struct {
+	data map[string]interface{}
+}
+
+func NewDebug(d map[string]interface{}) Debug {
+	return Debug{data: d}
+}
+
+func (d Debug) HTML(key string, checked bool) template.HTML {
+	if val, ok := d.data[key]; ok {
+		return SprintHTML(val, checked)
+	}
+
+	return template.HTML("cannot parse object")
+}
+
 func json2html(xm []byte, checked bool) template.HTML {
 	var xmu interface{}
 	err := json.Unmarshal(xm, &xmu)
