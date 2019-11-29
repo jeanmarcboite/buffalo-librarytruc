@@ -5,6 +5,7 @@ import (
 	"github.com/jeanmarcboite/bookins/pkg/books/online/net"
 )
 
+// Info -- Book info and metadata
 type Info struct {
 	Title          string
 	SubTitle       string

@@ -36,7 +36,7 @@ type Metadata struct {
 	Legal          string
 }
 
-// Author
+// Author -- Author name and id
 type Author struct {
 	Name string
 	Key  string
