@@ -6,23 +6,17 @@ type Metadata struct {
 	Title        string
 	SubTitle     string
 	Authors      []Author
-	Rating       string
+	Series string
+	Tags string
+	Ratings       string
+	RatingsPercent string
 	ReviewsCount int
 	RatingsSum   int
 	RatingsCount int
 	URL          string
+	Cover string
 	Covers       []string
-	Identifiers  struct {
-		ISBN13       []string
-		ISBN10       []string
-		Amazon       []string
-		ASIN         string
-		KindleASIN   string
-		Google       []string
-		Gutenberg    []string
-		Goodreads    []string
-		Librarything []string
-	}
+	Identifiers  Identifiers
 	PublishDate    string
 	Publishers     []string
 	PublishCountry string
@@ -41,4 +35,17 @@ type Author struct {
 	Name string
 	Key  string
 	ID   string
+}
+
+// Identifiers -- book identifiers
+type Identifiers struct {
+	ISBN13       []string
+	ISBN10       []string
+	Amazon       []string
+	ASIN         string
+	KindleASIN   string
+	Google       []string
+	Gutenberg    []string
+	Goodreads    []string
+	Librarything []string
 }
