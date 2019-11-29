@@ -1,15 +1,18 @@
 {{template "header.html" .}}
-
 <section class="hero">
-    <div class="hero-body">
-        <p class="title">
-            {{.book.Title}}
-        </p>
-        <img src="{{.book.Cover}}" alt="no cover">
-        <div class="buttons is-centered">
-            <a class="button is-small is-librarything" role="button" href="{{.book.URL}}"></a>
+    <div class="hero-body tile is-ancestor">
+        <div class="tile is-parent is-vertical">
+            <article class="tile is-child">
+                <p class="title">{{.book.Title}}</p>
+                <img src="{{.book.Cover}}" alt="no cover">
+            </article>
+            <article class="tile is-child">
+                <div class="buttons is-centered">
+                    <a class="button is-small is-librarything" role="button" href="{{.book.URL}}"></a>
+                    <a class="button is-small is-goodreads" role="button" href="{{.book.URL}}"></a>
+                </div>
+            </article>
         </div>
-
     </div>
 </section>
 {{template "debug.html" .}}
