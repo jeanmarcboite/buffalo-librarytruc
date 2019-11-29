@@ -1,0 +1,17 @@
+.is-librarything {
+    background-image: url('/public/img/librarything.jpg');
+    background-size: contain;
+    width: 80px;
+    height: 20px;
+    background-position: center center;
+    background-repeat: space repeat;
+}
+
+.is-goodreads {
+    background-image: url('/public/img/goodreads.png');
+    background-size: contain;
+    width: 80px;
+    height: 20px;
+    background-position: center center;
+    background-repeat: space repeat;
+}
