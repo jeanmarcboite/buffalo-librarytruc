@@ -15,6 +15,7 @@ func LookUpISBN(isbn string) (Book, error) {
 	response := strings.Replace(string(olResponse), fmt.Sprintf("ISBN:%v", isbn), "data", 1)
 
 	if err != nil {
+		net.Logger.DPanic(url, olResponse)
 		return Book{}, err
 	}
 

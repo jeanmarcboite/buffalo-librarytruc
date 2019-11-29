@@ -36,6 +36,7 @@ func get(what string, where string) (book.Metadata, error) {
 		net.Koanf.String("librarything.keyname"),
 		net.Koanf.String("librarything.key"))
 	if err != nil {
+		net.Logger.DPanic(url, err)
 		return book.Metadata{}, err
 	}
 
@@ -49,7 +50,9 @@ func get(what string, where string) (book.Metadata, error) {
 			xml := strings.NewReader(string(resp))
 			json, _ := xml2json.Convert(xml)
 
-			return book.Metadata{}, fmt.Errorf("Librarything response error: %v", json)
+			err := fmt.Errorf("%v", json)
+			net.Logger.Infof("get '%v': %v", url, err.Error())
+			return book.Metadata{}, err
 		}
 
 		return getMeta(response)
