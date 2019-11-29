@@ -5,8 +5,18 @@
         <p class="title">
             {{.book.Title}}
         </p>
+        <img src="{{.book.Cover}}" alt="no cover">
+        <div class="buttons is-centered">
+            <button class="button is-small is-rounded" href="{{.book.URL}} ">
+            <img src="/public/img/librarything_gr_logo.jpg " alt="Librarything" width="120">
+        </button>
+            <button class="button is-small is-rounded" href="{{.book.URL}} ">
+            <img src="/public/img/librarything_gr_logo.jpg " alt="Librarything" width="80">
+        </button>
+        </div>
+
     </div>
 </section>
 {{template "debug.html" .}}
-<<!-- /.container -->
+<!-- /.container -->
 {{template "footer.html" .}}
