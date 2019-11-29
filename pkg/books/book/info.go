@@ -1,5 +1,10 @@
 package book
 
+import (
+	"fmt"
+	"github.com/jeanmarcboite/bookins/pkg/books/online/net"
+)
+
 type Info struct {
 	Title          string
 	SubTitle       string
@@ -28,8 +33,13 @@ type Identifiers struct {
 }
 
 // New -- pack Info
-func New(metadata map[string]Metadata) (Info, error) {
+func New(ISBN string, metadata map[string]Metadata) (Info, error) {
 	this := Info{Metadata: metadata}
+
+	this.Title = metadata["librarything"].Title
+
+	this.Cover = fmt.Sprintf(net.Koanf.String("librarything.url.cover"),
+		net.Koanf.String("librarything.key"), ISBN)
 
 	return this, nil
 }

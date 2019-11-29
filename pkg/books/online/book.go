@@ -15,5 +15,5 @@ func LookUpISBN(isbn string) (book.Info, error) {
 	}
 	metadata["librarything"] = l
 
-	return book.New(metadata)
+	return book.New(isbn, metadata)
 }
