@@ -52,7 +52,7 @@ to quickly create a Cobra application.`,
 		})
 
 		r.HTMLRender = ginview.Default()
-		r.LoadHTMLGlob("internal/templates/bulma/*.html")
+		r.LoadHTMLGlob("internal/templates/*.html")
 		r.Static("/public", "./public")
 
 		r.NoRoute(controllers.NoRoute)
