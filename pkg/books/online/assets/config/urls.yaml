@@ -1,4 +1,4 @@
-application_name: &application BookinS
+application_name: &application LibraryTruc
 cache: 'librarytruc'
 fcache:
   isbn: isbn

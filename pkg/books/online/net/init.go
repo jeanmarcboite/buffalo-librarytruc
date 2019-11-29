@@ -6,8 +6,7 @@ import (
 	"github.com/knadh/koanf/providers/rawbytes"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-
-	"github.com/jeanmarcboite/bookins/pkg/books/online/assets"
+	"github.com/jeanmarcboite/librarytruc/pkg/books/online/assets"
 )
 
 // Koanf -- Global koanf instance. Use . as the key path delimiter. This can be / or anything.
