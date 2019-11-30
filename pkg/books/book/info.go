@@ -1,6 +1,7 @@
 package book
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 
@@ -19,10 +20,13 @@ func New(ISBN string, metadata map[string]Metadata) (Info, error) {
 
 	this.Cover = fmt.Sprintf(net.Koanf.String("librarything.url.cover"),
 		net.Koanf.String("librarything.key"), ISBN)
+	s, _ := json.MarshalIndent(this.Online, "", "\t")
+	fmt.Printf("%v/n", string(s))
 
 	assign(&this, "librarything", "Title")
 	assign(&this, "librarything", "Authors")
 	assign(&this, "librarything", "Description")
+	assign(&this, "openlibrary", "Title")
 
 	return this, nil
 }

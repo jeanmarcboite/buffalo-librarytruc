@@ -12,6 +12,7 @@ require (
 	github.com/jeanmarcboite/bookins v0.0.0-20191122164925-8a72d1cc9b44
 	github.com/knadh/koanf v0.6.0
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/rs/xid v1.2.1
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.5.0
 	go.uber.org/zap v1.13.0

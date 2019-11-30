@@ -5,25 +5,47 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jeanmarcboite/librarytruc/pkg/books/book"
 	"github.com/jeanmarcboite/librarytruc/pkg/books/online/net"
 )
 
 // LookUpISBN -- lookup a work on openlibrary, with isbn
-func LookUpISBN(isbn string) (Book, error) {
-	url := fmt.Sprintf(net.Koanf.String("openlibrary.url.isbn"), isbn)
-	olResponse, err := net.HTTPGet(url)
-	response := strings.Replace(string(olResponse), fmt.Sprintf("ISBN:%v", isbn), "data", 1)
+func LookUpISBN(isbn string) (book.Metadata, error) {
+	return get(isbn, net.Koanf.String("openlibrary.url.isbn"))
+}
 
+func get(isbn string, where string) (book.Metadata, error) {
+	url := fmt.Sprintf(where, isbn)
+	olresp, err := net.HTTPGet(url)
+	resp := strings.Replace(string(olresp), fmt.Sprintf("ISBN:%v", isbn), "data", 1)
 	if err != nil {
-		net.Logger.DPanic(url, olResponse)
-		return Book{}, err
+		net.Logger.DPanic(url, err)
+		return book.Metadata{}, err
+	}
+	//fmt.Printf("%v/n", string(resp))
+
+	var response BookResponse
+	json.Unmarshal([]byte(resp), &response)
+
+	return getMeta(response.Data)
+}
+
+func getMeta(response Book) (book.Metadata, error) {
+	meta := book.Metadata{
+		ID:          response.Details.Key,
+		Title:       response.Details.Title,
+		Authors:     []book.Author{},
+		Description: response.Details.Description,
+	}
+	for _, a := range response.Details.Authors {
+		author := book.Author{
+			Name: a.Name,
+			Key:  a.Key,
+		}
+		meta.Authors = append(meta.Authors, author)
 	}
 
-	var book BookResponse
-	json.Unmarshal([]byte(response), &book)
-
-	book.Data.Cover = fmt.Sprintf(net.Koanf.String("openlibrary.url.cover"), "isbn", isbn)
-	return book.Data, nil
+	return meta, nil
 }
 
 // Search -- search for a work with a title

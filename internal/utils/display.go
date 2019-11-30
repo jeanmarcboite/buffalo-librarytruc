@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"html/template"
 	"sort"
+	// "github.com/rs/xid"
 )
 
+// https://codepen.io/bisserof/pen/fdtBm
 type Debug struct {
 	data map[string]interface{}
 }
@@ -31,7 +33,9 @@ func json2html(xm []byte, checked bool) template.HTML {
 		return template.HTML(err.Error())
 	}
 
-	return template.HTML(styleSheet + toHTML(xmu, 1, checked))
+	id := 1
+	return template.HTML(toHTML(xmu, &id, true, checked))
+	//return template.HTML(styleSheet + list)
 }
 
 // JSON2HTML -- convert a JSON to HTML
@@ -48,63 +52,74 @@ func SprintHTML(x interface{}, checked bool) template.HTML {
 	return json2html(xm, checked)
 }
 
-func toHTML(x interface{}, id int, checked bool) string {
+func toHTML(x interface{}, id *int, top bool, checked bool) string {
 	switch v := x.(type) {
 	case map[string]interface{}:
-		return mapToHTML(v, id, checked)
+		return mapToHTML(v, id, top, checked)
 	case []interface{}:
-		return arrayToHTML(v, id, checked)
+		return arrayToHTML(v, id, top, checked)
 	}
 
 	return fmt.Sprintf("%v", x)
 }
 
-func mapToHTML(m map[string]interface{}, id int, checked bool) string {
+func ul(top bool) string {
+	if top {
+		return `<ul class = 'tree'>
+`
+	}
+	return `<ul>
+`
+}
+
+func mapToHTML(m map[string]interface{}, id *int, top bool, checked bool) string {
 	checkFlag := ""
 	if checked {
 		checkFlag = "checked"
 	}
 	checkbox := `
      <li><input type='checkbox' id='__c%v' %v/>
-        <i class='fa tree-node-right'></i>
-        <i class='fa tree-node-down'></i>
-        <label for='__c%v'>%v %v</label>
+        <label for='__c%v' class='tree_label'>%v %v</label>
         %v
     </li>
     `
-	value := `<li>"%v": "%v"</li>`
+	value := `<li><span class='tree_label'>"%v": "%v"</span></li>
+    `
 
-	bufferString := bytes.NewBufferString("<ul>")
+	//guid := xid.New().String()
+
+	bufferString := bytes.NewBufferString(ul(top))
 	keys := []string{}
 	for key := range m {
 		keys = append(keys, key)
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		id++
+		*id = *id + 1
 		//c.Log.Debugf("ID%v: %v\n", id, reflect.TypeOf(v))
 		switch m[k].(type) {
 		case map[string]interface{}:
-			fmt.Fprintf(bufferString, checkbox, id, checkFlag, id, k, "{}", toHTML(m[k], id, checked))
+			fmt.Fprintf(bufferString, checkbox, *id, checkFlag, *id, k, "{}", toHTML(m[k], id, top, checked))
 		case []interface{}:
-			fmt.Fprintf(bufferString, checkbox, id, checkFlag, id, k, "[]", toHTML(m[k], id, checked))
+			fmt.Fprintf(bufferString, checkbox, *id, checkFlag, *id, k, "[]", toHTML(m[k], id, top, checked))
 		default:
-			fmt.Fprintf(bufferString, value, k, toHTML(m[k], id, checked))
+			fmt.Fprintf(bufferString, value, k, toHTML(m[k], id, top, checked))
 		}
 	}
-	bufferString.WriteString("</ul>")
+	bufferString.WriteString("</ul>\n")
 	return bufferString.String()
 }
 
-func arrayToHTML(a []interface{}, id int, checked bool) string {
-	format := `<li>%v</li>`
+func arrayToHTML(a []interface{}, id *int, top bool, checked bool) string {
+	format := `<li><span class="tree_label">%v</span></li>
+    `
 
-	bufferString := bytes.NewBufferString("<ol  type = 'I'>")
+	bufferString := bytes.NewBufferString(ul(top))
 	for _, v := range a {
-		id++
-		fmt.Fprintf(bufferString, format, toHTML(v, id, checked))
+		fmt.Fprintf(bufferString, format, toHTML(v, id, top, checked))
 	}
-	bufferString.WriteString("</ol>")
+	bufferString.WriteString(`</ul>
+`)
 	return bufferString.String()
 }
 
@@ -167,8 +182,8 @@ const list = `
 
 <ul>
     <li><input type="checkbox" id="c1" />
-        <i class="fa fa-angle-double-right"></i>
-        <i class="fa fa-angle-double-down"></i>
+        <i class="fa fa-angle-double-right tree-node-right"></i>
+        <i class="fa fa-angle-double-down tree-node-down"></i>
         <label for="c1">Dossier A</label>
         <ul>
             <li>Sous dossier A1</li>
@@ -177,20 +192,20 @@ const list = `
         </ul>
     </li>
     <li><input type="checkbox" id="c2" />
-        <i class="fa fa-angle-double-right"></i>
-        <i class="fa fa-angle-double-down"></i>
+        <i class="fa fa-angle-double-right tree-node-right"></i>
+        <i class="fa fa-angle-double-down tree-node-down"></i>
         <label for="c2">Dossier B</label>
         <ul>
             <li>Sous dossier B1</li>
             <li><input type="checkbox" id="c3" />
-                <i class="fa fa-angle-double-right"></i>
-                <i class="fa fa-angle-double-down"></i>
+                <i class="fa fa-angle-double-right tree-node-right"></i>
+                <i class="fa fa-angle-double-down tree-node-down"></i>
                 <label for="c3">Sous dossier B2</label>
                 <ul>
                     <li>Sous-sous dossier B21</li>
                     <li><input type="checkbox" id="c4" />
-                        <i class="fa fa-angle-double-right"></i>
-                        <i class="fa fa-angle-double-down"></i>
+                        <i class="fa fa-angle-double-right tree-node-right"></i>
+                        <i class="fa fa-angle-double-down tree-node-down"></i>
                         <label for="c4">Sous-sous dossier B22</label>
                         <ul>
                             <li>Sous-sous-sous dossier B221</li>
