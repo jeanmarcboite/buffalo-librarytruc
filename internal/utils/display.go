@@ -52,7 +52,7 @@ func toHTML(x interface{}) string {
 
 func mapToHTML(m map[string]interface{}) string {
 	checkbox := `
-     <li type='%v'>%v %v 
+	 <li data-jstree = '{ "type" : "%v" }' >%v %v 
      %v
      </li>
     `
