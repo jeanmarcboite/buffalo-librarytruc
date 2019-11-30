@@ -16,7 +16,7 @@ func json2html(xm []byte) template.HTML {
 		return template.HTML(err.Error())
 	}
 
-	l := `<div id="jstree">
+	l := `<div id="jsontree">
 `
 	r := `
     </div>
