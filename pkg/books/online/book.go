@@ -26,7 +26,5 @@ func LookUpISBN(isbn string) (book.Info, error) {
 		metadata["goodreads"] = g
 	}
 
-	metadata["z_"] = o
-
 	return book.New(isbn, metadata)
 }
