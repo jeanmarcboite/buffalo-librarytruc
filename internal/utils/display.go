@@ -18,105 +18,93 @@ func NewDebug(d map[string]interface{}) Debug {
 	return Debug{data: d}
 }
 
-func (d Debug) HTML(key string, checked bool) template.HTML {
+func (d Debug) HTML(key string) template.HTML {
 	if val, ok := d.data[key]; ok {
-		return SprintHTML(val, checked)
+		return SprintHTML(val)
 	}
 
 	return template.HTML("cannot parse object")
 }
 
-func json2html(xm []byte, checked bool) template.HTML {
+func json2html(xm []byte) template.HTML {
 	var xmu interface{}
 	err := json.Unmarshal(xm, &xmu)
 	if err != nil {
 		return template.HTML(err.Error())
 	}
 
-	id := 1
-	return template.HTML(toHTML(xmu, &id, true, checked))
+	l := `<div id="jstree">
+`
+	r := `
+    </div>
+`
+	return template.HTML(l + toHTML(xmu) + r)
 	//return template.HTML(styleSheet + list)
 }
 
 // JSON2HTML -- convert a JSON to HTML
-func JSON2HTML(xm string, checked bool) template.HTML {
-	return json2html([]byte(xm), checked)
+func JSON2HTML(xm string) template.HTML {
+	return json2html([]byte(xm))
 }
 
 // SprintHTML  -- print data in HTML
-func SprintHTML(x interface{}, checked bool) template.HTML {
+func SprintHTML(x interface{}) template.HTML {
 	xm, err := json.Marshal(x)
 	if err != nil {
 		return template.HTML(err.Error())
 	}
-	return json2html(xm, checked)
+	return json2html(xm)
 }
 
-func toHTML(x interface{}, id *int, top bool, checked bool) string {
+func toHTML(x interface{}) string {
 	switch v := x.(type) {
 	case map[string]interface{}:
-		return mapToHTML(v, id, top, checked)
+		return mapToHTML(v)
 	case []interface{}:
-		return arrayToHTML(v, id, top, checked)
+		return arrayToHTML(v)
 	}
 
 	return fmt.Sprintf("%v", x)
 }
 
-func ul(top bool) string {
-	if top {
-		return `<ul class = 'tree'>
-`
-	}
-	return `<ul>
-`
-}
-
-func mapToHTML(m map[string]interface{}, id *int, top bool, checked bool) string {
-	checkFlag := ""
-	if checked {
-		checkFlag = "checked"
-	}
+func mapToHTML(m map[string]interface{}) string {
 	checkbox := `
-     <li><input type='checkbox' id='__c%v' %v/>
-        <label for='__c%v' class='tree_label'>%v %v</label>
-        %v
-    </li>
+     <li>%v %v 
+     %v
+     </li>
     `
-	value := `<li><span class='tree_label'>"%v": "%v"</span></li>
+	value := `<li>"%v": "%v"</li>
     `
 
 	//guid := xid.New().String()
 
-	bufferString := bytes.NewBufferString(ul(top))
+	bufferString := bytes.NewBufferString("<ul>")
 	keys := []string{}
 	for key := range m {
 		keys = append(keys, key)
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		*id = *id + 1
-		//c.Log.Debugf("ID%v: %v\n", id, reflect.TypeOf(v))
 		switch m[k].(type) {
 		case map[string]interface{}:
-			fmt.Fprintf(bufferString, checkbox, *id, checkFlag, *id, k, "{}", toHTML(m[k], id, top, checked))
+			fmt.Fprintf(bufferString, checkbox, k, "{}", toHTML(m[k]))
 		case []interface{}:
-			fmt.Fprintf(bufferString, checkbox, *id, checkFlag, *id, k, "[]", toHTML(m[k], id, top, checked))
+			fmt.Fprintf(bufferString, checkbox, k, "[]", toHTML(m[k]))
 		default:
-			fmt.Fprintf(bufferString, value, k, toHTML(m[k], id, top, checked))
+			fmt.Fprintf(bufferString, value, k, toHTML(m[k]))
 		}
 	}
-	bufferString.WriteString("</ul>\n")
+	bufferString.WriteString("</ul>")
 	return bufferString.String()
 }
 
-func arrayToHTML(a []interface{}, id *int, top bool, checked bool) string {
-	format := `<li><span class="tree_label">%v</span></li>
+func arrayToHTML(a []interface{}) string {
+	format := `<li>%v</li>
     `
 
-	bufferString := bytes.NewBufferString(ul(top))
+	bufferString := bytes.NewBufferString("<ul>")
 	for _, v := range a {
-		fmt.Fprintf(bufferString, format, toHTML(v, id, top, checked))
+		fmt.Fprintf(bufferString, format, toHTML(v))
 	}
 	bufferString.WriteString(`</ul>
 `)

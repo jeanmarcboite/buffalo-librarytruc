@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// NoRoute -- error  404
 func NoRoute(c *gin.Context) {
 	c.HTML(http.StatusNotFound, "error-404.html", gin.H{})
 }

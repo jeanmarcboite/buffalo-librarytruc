@@ -8,6 +8,7 @@ import (
 	"github.com/jeanmarcboite/librarytruc/pkg/books/online"
 )
 
+// BookID -- extract ISBN param
 type BookID struct {
 	ISBN string `uri:"id" binding:"required"`
 }
@@ -23,12 +24,12 @@ func LookupID(c *gin.Context) {
 	book, err := online.LookUpISBN(bookID.ISBN)
 
 	if err != nil {
-		html := utils.JSON2HTML(err.Error(), true)
+		html := utils.JSON2HTML(err.Error())
 		c.HTML(http.StatusInternalServerError, "error-500.html", gin.H{"errorHTML": html})
 		return
 	}
 
 	c.HTML(http.StatusOK,
 		"Details.html",
-		gin.H{"title": book.Title, "book": book, "debug": utils.SprintHTML(book, false)})
+		gin.H{"title": book.Title, "book": book, "debug": utils.SprintHTML(book)})
 }
