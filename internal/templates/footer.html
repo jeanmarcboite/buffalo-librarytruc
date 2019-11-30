@@ -29,6 +29,26 @@
     });
 </script>
 
+
+<script>
+    $(function() {
+        $('#dark').jstree({
+            plugins: ["checkbox", "types", "wholerow"],
+            "core": {
+                "themes": {
+                    "name": "default-dark"
+                }
+            },
+            "types": {
+                "file": {
+                    "icon": "jstree-file"
+                }
+            }
+        });
+
+        $('#jstree').jstree()
+    })
+</script>
 </body>
 
 </html>
