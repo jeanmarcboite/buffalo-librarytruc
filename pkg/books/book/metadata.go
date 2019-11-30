@@ -2,21 +2,21 @@ package book
 
 // Metadata -- book metadata
 type Metadata struct {
-	ID           string
-	Title        string
-	SubTitle     string
-	Authors      []Author
-	Series string
-	Tags string
-	Ratings       string
+	ID             string
+	Title          string
+	SubTitle       string
+	Authors        []Author
+	Series         string
+	Tags           string
+	Ratings        string
 	RatingsPercent string
-	ReviewsCount int
-	RatingsSum   int
-	RatingsCount int
-	URL          string
-	Cover string
-	Covers       []string
-	Identifiers  Identifiers
+	ReviewsCount   int
+	RatingsSum     int
+	RatingsCount   int
+	URL            string
+	Cover          string
+	Covers         []string
+	Identifiers    Identifiers
 	PublishDate    string
 	Publishers     []string
 	PublishCountry string
