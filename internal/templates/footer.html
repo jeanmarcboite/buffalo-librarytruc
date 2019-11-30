@@ -31,9 +31,22 @@
 
 <script>
     $(function() {
-        // 6 create an instance when the DOM is ready
-        $('#jstree').jstree();
-    });
+        $('#dark').jstree({
+            plugins: ["checkbox", "types", "wholerow"],
+            "core": {
+                "themes": {
+                    "name": "default-dark"
+                }
+            },
+            "types": {
+                "file": {
+                    "icon": "jstree-file"
+                }
+            }
+        });
+
+        $('#jstree').jstree()
+    })
 </script>
 
 </body>
