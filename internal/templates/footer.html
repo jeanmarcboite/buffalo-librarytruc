@@ -32,21 +32,26 @@
 
 <script>
     $(function() {
-        $('#dark').jstree({
-            plugins: ["checkbox", "types", "wholerow"],
+        $('#jsontree').jstree({
+            plugins: ["wholerow", "types", "search"],
             "core": {
                 "themes": {
-                    "name": "default-dark"
+                    "name": "default",
+                    "ellipsis": true
                 }
             },
             "types": {
-                "file": {
-                    "icon": "jstree-file"
-                }
-            }
-        });
-
-        $('#jsontree').jstree()
+                "map": {
+                    "icon": "/public/img/favicon.png"
+                },
+                "array": {
+                    "icon": "/public/img/favicon.png"
+                },
+                "default": {
+                    "icon": "fa fa-angle-double-right"
+                },
+            },
+        })
     })
 </script>
 </body>

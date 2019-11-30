@@ -52,7 +52,7 @@ func toHTML(x interface{}) string {
 
 func mapToHTML(m map[string]interface{}) string {
 	checkbox := `
-     <li>%v %v 
+     <li type='%v'>%v %v 
      %v
      </li>
     `
@@ -70,9 +70,9 @@ func mapToHTML(m map[string]interface{}) string {
 	for _, k := range keys {
 		switch m[k].(type) {
 		case map[string]interface{}:
-			fmt.Fprintf(bufferString, checkbox, k, "{}", toHTML(m[k]))
+			fmt.Fprintf(bufferString, checkbox, "map", k, "{}", toHTML(m[k]))
 		case []interface{}:
-			fmt.Fprintf(bufferString, checkbox, k, "[]", toHTML(m[k]))
+			fmt.Fprintf(bufferString, checkbox, "array", k, "[]", toHTML(m[k]))
 		default:
 			fmt.Fprintf(bufferString, value, k, toHTML(m[k]))
 		}
