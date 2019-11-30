@@ -56,7 +56,7 @@ func mapToHTML(m map[string]interface{}) string {
      %v
      </li>
     `
-	value := `<li>"%v": "%v"</li>
+	value := `<li>%v: "%v"</li>
     `
 
 	//guid := xid.New().String()
