@@ -9,22 +9,6 @@ import (
 	// "github.com/rs/xid"
 )
 
-type Debug struct {
-	data map[string]interface{}
-}
-
-func NewDebug(d map[string]interface{}) Debug {
-	return Debug{data: d}
-}
-
-func (d Debug) HTML(key string) template.HTML {
-	if val, ok := d.data[key]; ok {
-		return SprintHTML(val)
-	}
-
-	return template.HTML("cannot parse object")
-}
-
 func json2html(xm []byte) template.HTML {
 	var xmu interface{}
 	err := json.Unmarshal(xm, &xmu)
