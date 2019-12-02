@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "go build main.go",
+            "command": "go build -o /tmp/librarytruc main.go",
             "group": {
                 "kind": "build",
                 "isDefault": true
