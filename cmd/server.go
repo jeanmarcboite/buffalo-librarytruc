@@ -7,6 +7,7 @@ import (
 	"github.com/foolin/goview/supports/ginview"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"github.com/kubastick/ginception"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 
@@ -39,7 +40,7 @@ to quickly create a Cobra application.`,
 		// Logs all panic to error log
 		//   - stack means whether output the stack info.
 		//r.Use(ginzap.RecoveryWithZap(logger, true))
-		//r.Use(ginception.Middleware()) // Attach ginception middleware
+		r.Use(ginception.Middleware()) // Attach ginception middleware
 
 		// Example ping request.
 		r.GET("/ping", func(c *gin.Context) {

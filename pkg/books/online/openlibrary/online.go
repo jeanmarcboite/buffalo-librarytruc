@@ -27,16 +27,53 @@ func get(isbn string, where string) (book.Metadata, error) {
 	var response BookResponse
 	json.Unmarshal([]byte(resp), &response)
 
-	return getMeta(response.Data)
+	return getMeta(isbn, response.Data)
 }
 
-func getMeta(response Book) (book.Metadata, error) {
-	meta := book.Metadata{
-		ID:          response.Details.Key,
-		Title:       response.Details.Title,
-		Authors:     []book.Author{},
-		Description: response.Details.Description,
+// SearchTitle -- search for a work with a title
+func SearchTitle(title string) (book.Metadata, error) {
+	w := normalizeString(title)
+	url := fmt.Sprintf(net.Koanf.String("openlibrary.url.title"),
+		w)
+
+	data, err := net.HTTPGet(url)
+	if err != nil {
+		return book.Metadata{}, err
 	}
+	var response Response
+	json.Unmarshal(data, &response)
+
+	if response.NumFound < 1 {
+		return book.Metadata{}, fmt.Errorf("No book found for '%s'", title)
+	}
+	return LookUpISBN(response.Docs[0].ISBN[0])
+}
+
+func normalizeString(s string) string {
+	w := s
+	if idx := strings.IndexAny(s, "(-"); idx >= 0 {
+		w = s[:idx]
+	}
+	return strings.Join(strings.Fields(w), "+")
+}
+
+func getMeta(isbn string, response Book) (book.Metadata, error) {
+	meta := book.Metadata{
+		ISBN: isbn,
+		ID:      response.Details.Key,
+		Title:   response.Details.Title,
+		Authors: []book.Author{},
+		Identifiers: book.Identifiers{
+			ISBN10:       response.Details.ISBN10,
+			ISBN13:       response.Details.ISBN13,
+			Goodreads:    response.Details.Identifiers.Goodreads,
+			Librarything: response.Details.Identifiers.Librarything,
+		},
+		PublishCountry: response.Details.PublishCountry,
+		Publishers:     response.Details.Publishers,
+		Description:    response.Details.Description,
+	}
+
 	for _, a := range response.Details.Authors {
 		author := book.Author{
 			Name: a.Name,

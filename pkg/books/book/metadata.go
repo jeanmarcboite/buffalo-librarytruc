@@ -28,6 +28,8 @@ type Metadata struct {
 	IsEbook        string
 	LanguageCode   string
 	Legal          string
+
+	ISBN string
 }
 
 // Author -- Author name and id

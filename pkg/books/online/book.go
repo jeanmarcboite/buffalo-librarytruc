@@ -26,5 +26,16 @@ func LookUpISBN(isbn string) (book.Info, error) {
 		metadata["goodreads"] = g
 	}
 
-	return book.New(isbn, metadata)
+	return book.New(metadata)
+}
+
+// SearchTitle --
+func SearchTitle(title string) (book.Info, error) {
+	metadata := make(map[string]book.Metadata)
+	o, err := openlibrary.SearchTitle(title)
+	if err == nil {
+		metadata["openlibrary"] = o
+	}
+	return book.New(metadata)
+
 }

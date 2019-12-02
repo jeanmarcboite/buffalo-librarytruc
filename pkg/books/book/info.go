@@ -14,17 +14,16 @@ type Info struct {
 }
 
 // New -- pack Info
-func New(ISBN string, metadata map[string]Metadata) (Info, error) {
+func New(metadata map[string]Metadata) (Info, error) {
 	this := Info{Online: metadata}
 
-	this.Cover = fmt.Sprintf(net.Koanf.String("librarything.url.cover"),
-		net.Koanf.String("librarything.key"), ISBN)
-
 	for _, online := range []string{"librarything", "goodreads", "openlibrary"} {
-		for _, what := range []string{"Title", "Authors", "Description"} {
+		for _, what := range []string{"ISBN", "Title", "Authors", "Description", "Identifiers"} {
 			assign(&this, online, what)
 		}
 	}
+	this.Cover = fmt.Sprintf(net.Koanf.String("librarything.url.cover"),
+		net.Koanf.String("librarything.key"), this.ISBN)
 
 	return this, nil
 }
