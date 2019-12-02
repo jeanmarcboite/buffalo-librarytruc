@@ -22,6 +22,8 @@ logging:
 # curl "https://www.goodreads.com/book/title.xml?key=iKEG2vmZFhfw1GkHkMRk7w&title=Voyage+autour+du+monde+par+la+"
 # curl "https://www.goodreads.com/book/title.xml?title=Voyage+autour+du+monde+par+la&key=iKEG2vmZFhfw1GkHkMRk7w"
 
+google:
+  key: 'AIzaSyA2AYdfhkHEdNEllBxD8B1A7nwE0ByIfF4'
 goodreads:
   key: 'iKEG2vmZFhfw1GkHkMRk7w'
   keyname: "key"
