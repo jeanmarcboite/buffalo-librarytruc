@@ -47,7 +47,7 @@ func assign(this *Info, key string, fieldName string) {
 	value := reflect.ValueOf(this.Online[key]).FieldByName(fieldName)
 	field := reflect.ValueOf(this).Elem().FieldByName(fieldName)
 
-	if field.Len() == 0 {
+	if field.IsZero() {
 		// A Value can be changed only if it is
 		// addressable and was not obtained by
 		// the use of unexported struct fields.
