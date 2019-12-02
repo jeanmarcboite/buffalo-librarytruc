@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>This is the title</title>
     <link rel="import" href="/public/css/linkcss.html">
- </head>
+</head>
 
 <body>
     <nav class="navbar is-primary " role="navigation " aria-label="main navigation ">
@@ -51,8 +51,13 @@
                     </div>
                 </div>
             </div>
-
             <div class="navbar-end ">
+                <div class="navbar-item">
+                    <form action="/book/search" method="POST" class="control has-addons">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" name="what">
+                        <button class="button is-link is-small" type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
                 <div class="navbar-item ">
                     <div class="buttons ">
                         <a class="button is-primary ">
