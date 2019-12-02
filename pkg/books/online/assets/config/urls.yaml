@@ -24,6 +24,9 @@ logging:
 
 google:
   key: 'AIzaSyA2AYdfhkHEdNEllBxD8B1A7nwE0ByIfF4'
+  keyname: "key"
+  url:
+    isbn: 'https://www.googleapis.com/books/v1/volumes?q=isbn:%v'
 goodreads:
   key: 'iKEG2vmZFhfw1GkHkMRk7w'
   keyname: "key"

@@ -18,10 +18,11 @@ func New(metadata map[string]Metadata) (Info, error) {
 	this := Info{Online: metadata}
 
 	for _, online := range []string{"librarything", "goodreads", "openlibrary"} {
-		for _, what := range []string{"ISBN", "Title", "Authors", "Description", "Identifiers"} {
+		for _, what := range []string{"ISBN", "Title", "Authors", "Description", "Identifiers", "NumberOfPages"} {
 			assign(&this, online, what)
 		}
 	}
+
 	this.Cover = fmt.Sprintf(net.Koanf.String("librarything.url.cover"),
 		net.Koanf.String("librarything.key"), this.ISBN)
 

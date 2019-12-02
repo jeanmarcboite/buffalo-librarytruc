@@ -3,6 +3,7 @@ package online
 import (
 	"github.com/jeanmarcboite/librarytruc/pkg/books/book"
 	"github.com/jeanmarcboite/librarytruc/pkg/books/online/goodreads"
+	"github.com/jeanmarcboite/librarytruc/pkg/books/online/google"
 	"github.com/jeanmarcboite/librarytruc/pkg/books/online/librarything"
 	"github.com/jeanmarcboite/librarytruc/pkg/books/online/openlibrary"
 )
@@ -24,6 +25,11 @@ func LookUpISBN(isbn string) (book.Info, error) {
 	g, err := goodreads.LookUpISBN(isbn)
 	if err == nil {
 		metadata["goodreads"] = g
+	}
+
+	goog, err := google.LookUpISBN(isbn)
+	if err == nil {
+		metadata["google"] = goog
 	}
 
 	return book.New(metadata)
