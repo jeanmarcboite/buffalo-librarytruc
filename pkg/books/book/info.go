@@ -17,7 +17,7 @@ type Info struct {
 func New(metadata map[string]Metadata) (Info, error) {
 	this := Info{Online: metadata}
 
-	for _, online := range []string{"librarything", "goodreads", "openlibrary"} {
+	for online := range metadata {
 		for _, what := range []string{"ISBN", "Title", "Authors", "Description", "Identifiers", "NumberOfPages"} {
 			assign(&this, online, what)
 		}
