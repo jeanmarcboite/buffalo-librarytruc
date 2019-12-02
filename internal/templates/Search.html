@@ -1,0 +1,16 @@
+{{template "header.html" .}}
+<section class="hero">
+    <div class="hero-body tile is-ancestor">
+        <div class="tile is-parent is-vertical">
+            <article class="tile is-child">
+                <p class="title">{{.title}}</p>
+            </article>
+            <article class="tile is-child">
+                <p>{{.search}} </p>
+            </article>
+        </div>
+    </div>
+</section>
+{{template "debug.html" .}}
+<!-- /.container -->
+{{template "footer.html" .}}

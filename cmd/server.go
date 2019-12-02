@@ -57,6 +57,7 @@ to quickly create a Cobra application.`,
 
 		r.NoRoute(controllers.NoRoute)
 		r.GET("/", controllers.Home)
+		r.POST("/book/search/", controllers.Search)
 		r.GET("/book/:id", controllers.LookupID)
 		r.Run() // listen and serve on 0.0.0.0:8080
 	},
