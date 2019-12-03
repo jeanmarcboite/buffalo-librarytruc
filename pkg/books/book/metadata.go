@@ -1,5 +1,7 @@
 package book
 
+import "strings"
+
 // Metadata -- book metadata
 type Metadata struct {
 	ID             string
@@ -50,4 +52,14 @@ type Identifiers struct {
 	Gutenberg    []string
 	Goodreads    []string
 	Librarything []string
+}
+
+// GetAuthors -- return the author(s)
+func (m Metadata) GetAuthors() string {
+	authors := make([]string, len(m.Authors))
+	for k, author := range m.Authors {
+		authors[k] = author.Name
+	}
+
+	return strings.Join(authors, ", ")
 }
