@@ -1,9 +1,40 @@
 {{template "header.html" .}}
+<div class="columns is-multiline is-mobile">
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column is-half">
+        <code>is-half</code>
+    </div>
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column is-one-quarter">
+        <code>is-one-quarter</code>
+    </div>
+    <div class="column">
+        Auto
+    </div>
+</div>
 <div class="columns is-multiline">
     {{range .books}}
     <div class="column is-one-quarter">
-        <p class="title">{{.Title}}</p>
-        <img src="{{.Cover}}" alt="no cover">
+        <a href="/book/{{.ISBN}}">
+            <h3>{{.Title}}</h3>
+            <img src="{{.Cover}}" alt="no cover">
+        </a>
     </div>
     {{end}}
 </div>
