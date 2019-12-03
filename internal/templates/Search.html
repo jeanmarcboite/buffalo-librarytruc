@@ -1,14 +1,12 @@
 {{template "header.html" .}}
-<section class="hero">
-    <div class="hero-body tile is-ancestor">
-        {{range .books}}
-        <div class="tile is-3">
-            <p class="title">{{.Title}}</p>
-            <img src="{{.Cover}}" alt="no cover">
-        </div>
-        {{end}}
+<div class="columns is-multiline">
+    {{range .books}}
+    <div class="column is-one-quarter">
+        <p class="title">{{.Title}}</p>
+        <img src="{{.Cover}}" alt="no cover">
     </div>
-</section>
+    {{end}}
+</div>
 {{template "debug.html" .}}
 <!-- /.container -->
 {{template "footer.html" .}}
