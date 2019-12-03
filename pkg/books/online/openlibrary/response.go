@@ -2,32 +2,33 @@ package openlibrary
 
 // Response -- struct returned by http://openlibrary.org/search.json?q=the+lord+of+the+rings
 type Response struct {
-	NumFound int `json:"numFound"`
+	NumFound int   `json:"numFound"`
 	Docs     []Doc `json:"docs"`
 }
 
+// Doc -- one item of Response
 type Doc struct {
-		TitleSuggest     string   `json:"title_suggest"`
-		AuthorKey        []string `json:"author_key"`
-		AuthorName       []string `json:"author_name"`
-		Contributor      []string `json:"contributor"`
-		CoverI           string   `json:"cover_i"`
-		EbookCount       int      `json:"ebook_count"`
-		EditionKey       []string `json:"edition_key"`
-		FirstPublishYear int      `json:"first_publish_year"`
-		HasFulltext      bool     `json:"has_full_text"`
-		ISBN             []string `json:"isbn"`
-		Key              string   `json:"key"`
-		Language         []string `json:"language"`
-		OCLC             []string `json:"oclc"`
-		Place            []string `json:"place"`
-		PublishDate      []string `json:"publish_date"`
-		PublishYear      []int    `json:"publish_year"`
-		Seed             []string `json:"seed"`
-		Subject          []string `json:"subject"`
-		Text             []string `json:"text"`
-		Title            string   `json:"title"`
-		Type             string   `json:"type"`
+	TitleSuggest     string   `json:"title_suggest"`
+	AuthorKey        []string `json:"author_key"`
+	AuthorName       []string `json:"author_name"`
+	Contributor      []string `json:"contributor"`
+	CoverI           string   `json:"cover_i"`
+	EbookCount       int      `json:"ebook_count"`
+	EditionKey       []string `json:"edition_key"`
+	FirstPublishYear int      `json:"first_publish_year"`
+	HasFulltext      bool     `json:"has_full_text"`
+	ISBN             []string `json:"isbn"`
+	Key              string   `json:"key"`
+	Language         []string `json:"language"`
+	OCLC             []string `json:"oclc"`
+	Place            []string `json:"place"`
+	PublishDate      []string `json:"publish_date"`
+	PublishYear      []int    `json:"publish_year"`
+	Seed             []string `json:"seed"`
+	Subject          []string `json:"subject"`
+	Text             []string `json:"text"`
+	Title            string   `json:"title"`
+	Type             string   `json:"type"`
 }
 
 // BookResponse -- response from openlibrary

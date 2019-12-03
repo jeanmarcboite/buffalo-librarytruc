@@ -36,12 +36,19 @@ func LookUpISBN(isbn string) (book.Info, error) {
 }
 
 // SearchTitle --
-func SearchTitle(title string) (book.Info, error) {
-	metadata := make(map[string]book.Metadata)
-	o, err := openlibrary.SearchTitle(title)
-	if err == nil {
-		metadata["openlibrary"] = o
+func SearchTitle(title string) ([]book.Info, error) {
+	docs, err := openlibrary.SearchTitle(title)
+	if err != nil {
+		return nil, err
 	}
-	return book.New(metadata)
+	books := make([]book.Info, len(docs))
+	for k, doc := range docs {
+		metadata := make(map[string]book.Metadata)
+		if err == nil {
+			metadata["openlibrary"] = doc
+			books[k], err = book.New(metadata)
+		}
+	}
 
+	return books, err
 }

@@ -1,14 +1,12 @@
 {{template "header.html" .}}
 <section class="hero">
     <div class="hero-body tile is-ancestor">
-        <div class="tile is-parent is-vertical">
-            <article class="tile is-child">
-                <p class="title">{{.title}}</p>
-            </article>
-            <article class="tile is-child">
-                <p>{{.search}} </p>
-            </article>
+        {{range .books}}
+        <div class="tile is-3">
+            <p class="title">{{.Title}}</p>
+            <img src="{{.Cover}}" alt="no cover">
         </div>
+        {{end}}
     </div>
 </section>
 {{template "debug.html" .}}

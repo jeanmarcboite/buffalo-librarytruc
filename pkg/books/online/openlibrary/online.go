@@ -31,22 +31,35 @@ func get(isbn string, where string) (book.Metadata, error) {
 }
 
 // SearchTitle -- search for a work with a title
-func SearchTitle(title string) (book.Metadata, error) {
+func SearchTitle(title string) ([]book.Metadata, error) {
 	w := normalizeString(title)
 	url := fmt.Sprintf(net.Koanf.String("openlibrary.url.title"),
 		w)
 
 	data, err := net.HTTPGet(url)
 	if err != nil {
-		return book.Metadata{}, err
+		return nil, err
 	}
 	var response Response
 	json.Unmarshal(data, &response)
 
 	if response.NumFound < 1 {
-		return book.Metadata{}, fmt.Errorf("No book found for '%s'", title)
+		return nil, fmt.Errorf("No book found for '%s'", title)
 	}
-	return LookUpISBN(response.Docs[0].ISBN[0])
+	metadata := make([]book.Metadata, 0)
+
+	for _, doc := range response.Docs {
+		fmt.Printf("isbns:: %v\n", doc.ISBN)
+		if len(doc.ISBN) > 0 {
+			mi, err := LookUpISBN(doc.ISBN[0])
+			if err != nil {
+				return nil, err
+			}
+			metadata = append(metadata, mi)
+		}
+	}
+
+	return metadata, err
 }
 
 func normalizeString(s string) string {
@@ -59,7 +72,7 @@ func normalizeString(s string) string {
 
 func getMeta(isbn string, response Book) (book.Metadata, error) {
 	meta := book.Metadata{
-		ISBN: isbn,
+		ISBN:    isbn,
 		ID:      response.Details.Key,
 		Title:   response.Details.Title,
 		Authors: []book.Author{},

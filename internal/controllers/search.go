@@ -16,8 +16,9 @@ type SearchParam struct {
 // Search --
 func Search(c *gin.Context) {
 	c.Request.ParseForm()
+	what := c.Request.PostForm["what"][0]
 
-	book, err := online.SearchTitle(c.Request.PostForm["what"][0])
+	books, err := online.SearchTitle(what)
 	/*
 		c.HTML(http.StatusOK, "Search.html",
 			gin.H{"title": "search", "search": c.Request.PostForm["what"]})
@@ -29,7 +30,7 @@ func Search(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK,
-		"Details.html",
-		gin.H{"title": book.Title, "book": book, "debug": utils.SprintHTML(book)})
+		"Search.html",
+		gin.H{"title": what, "books": books, "debug": utils.SprintHTML(books)})
 
 }
